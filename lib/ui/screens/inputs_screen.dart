@@ -9,49 +9,55 @@ class InputsScreen extends StatefulWidget {
 
 class _InputsScreenState extends State<InputsScreen> {
   String _userName = '';
+  String _password = '';
+  String _email = '';
+  String _fecha = '';
+  final TextEditingController _inputFielDateController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Entradas de datos'),
+        title: const Text('Entrada de datos por el usuario'),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 20.0,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
         children: [
-          _createEntradaNombre(),
-          _createEntradaPass(),
+          _crearEntradaNombre(),
+          const Divider(),
+          _crearEntradaPswd(),
+          const Divider(),
+          _crearEntradaemail(),
+          const Divider(),
+          _crearEntradaFecha(),
         ],
       ),
     );
   }
 
-  Widget _createEntradaNombre() {
+  Widget _crearEntradaNombre() {
     return TextField(
       autofocus: true,
-      textAlign: TextAlign.center,
-      textCapitalization: TextCapitalization.sentences,
+      textAlign: TextAlign.left,
       style: const TextStyle(
-        color: Colors.amberAccent,
+        color: Color.fromARGB(255, 241, 243, 247),
         fontWeight: FontWeight.bold,
       ),
-      cursorColor: Color.fromARGB(255, 0, 25, 57),
-      cursorRadius: const Radius.circular(10.0),
-      cursorWidth: 5.0,
+      cursorColor: Color.fromARGB(255, 8, 49, 162),
+      cursorRadius: const Radius.circular(9.0),
+      cursorWidth: 3.0,
       //maxLength: 4,
-
-      maxLines: 2,
+      maxLines: null,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          hintText: "Escriba su nombre",
-          labelText: "User name",
-          //helperText: "Nombre",
-          prefixIcon: const Icon(Icons.person)
-          // icon: const Icon(Icons.person),,
-          //iconColor: Colors.blueGrey,
-          ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        hintText: "Pon aquí tu nombre",
+        labelText: "Nombre:",
+        // icono normal icon: Icon(Icons.person_4),
+        prefixIcon: Icon(Icons.person),
+        // prefix: const CircularProgressIndicotor(),
+        //iconColor: Color.fromARGB(255, 8, 49, 162)
+      ),
       onChanged: (valor) {
         _userName = valor;
         print(_userName);
@@ -59,37 +65,100 @@ class _InputsScreenState extends State<InputsScreen> {
     );
   }
 
-  Widget _createEntradaPass() {
+  Widget _crearEntradaPswd() {
     return TextField(
-      autofocus: true,
-      textAlign: TextAlign.center,
-      textCapitalization: TextCapitalization.sentences,
+      textAlign: TextAlign.left,
       style: const TextStyle(
-        color: Colors.amberAccent,
+        color: Color.fromARGB(255, 241, 243, 247),
         fontWeight: FontWeight.bold,
       ),
-      cursorColor: Colors.red,
-      cursorRadius: const Radius.circular(10.0),
-      cursorWidth: 5.0,
+      cursorColor: Color.fromARGB(255, 8, 49, 162),
+      cursorRadius: const Radius.circular(9.0),
+      cursorWidth: 3.0,
       maxLength: 8,
       obscureText: true,
       keyboardType: TextInputType.number,
-
-      //maxLines: 2,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-        hintText: "Escriba su nombre",
-        labelText: "Password",
-
-        //helperText: "Nombre",
-        prefixIcon: const Icon(Icons.password),
-        // icon: const Icon(Icons.person),,
-        //iconColor: Colors.blueGrey,
+        hintText: "Escribe tu contraseña",
+        labelText: "Contraseña:",
+        prefixIcon: Icon(Icons.key_outlined),
+        //suffixIcon: const Icon(Icons.key)
       ),
       onChanged: (valor) {
-        _userName = valor;
-        print(_userName);
+        _password = valor;
+        print(_password);
       },
     );
+  }
+
+  Widget _crearEntradaemail() {
+    return TextField(
+      textAlign: TextAlign.left,
+      style: const TextStyle(
+        color: Color.fromARGB(255, 241, 243, 247),
+        fontWeight: FontWeight.bold,
+      ),
+      cursorColor: Color.fromARGB(255, 8, 49, 162),
+      cursorRadius: const Radius.circular(9.0),
+      cursorWidth: 3.0,
+      keyboardType: TextInputType.number,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        hintText: "Escribe tu email",
+        labelText: "E-mail:",
+        prefixIcon: Icon(Icons.mail_rounded),
+        //suffixIcon: const Icon(Icons.key)
+      ),
+      onChanged: (valor) {
+        _email = valor;
+        print(_email);
+      },
+    );
+  }
+
+  Widget _crearEntradaFecha() {
+    return TextField(
+      controller: _inputFielDateController,
+      enableInteractiveSelection: false,
+      textAlign: TextAlign.left,
+      style: const TextStyle(
+        color: Color.fromARGB(255, 241, 243, 247),
+        fontWeight: FontWeight.bold,
+      ),
+      cursorColor: Color.fromARGB(255, 8, 49, 162),
+      cursorRadius: const Radius.circular(9.0),
+      cursorWidth: 3.0,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        hintText: "Escribe tu fecha de nacimiento",
+        labelText: "Fecha de nacimiento:",
+        prefixIcon: Icon(Icons.calendar_month_rounded),
+        //suffixIcon: const Icon(Icons.key)
+      ),
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        _selectDate(context);
+      },
+    );
+  }
+
+  _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2014),
+      lastDate: DateTime(2026),
+    );
+    if (picked != null) {
+      setState(() {
+        _fecha = picked.toString();
+        print(_fecha);
+        _inputFielDateController.text = _fecha;
+      });
+    }
   }
 }
